@@ -1,9 +1,10 @@
 [package]
 name = "rangex"
 version = "0.1.0"
-authors = ["Brendan Molloy <brendan@bbqsrc.net>"]
+authors = ["Brendan Molloy <brendan@technocreatives.com>"]
 description = "Inclusive/exclusive/unbounded Range type compatible with sqlx and async_graphql"
 edition = "2018"
+license = "Apache-2.0 OR MIT"
 
 [dependencies]
 async-graphql = { version = "2", optional = true }
@@ -16,6 +17,3 @@ serde_json = "1"
 [dev-dependencies.sqlx]
 version = "0.5.5"
 features = ["runtime-tokio-rustls", "postgres"]
-
-# [features]
-# default = ["async-graphql", "sqlx", "serde"]
