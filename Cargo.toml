@@ -5,6 +5,7 @@ authors = ["Brendan Molloy <brendan@technocreatives.com>"]
 description = "Inclusive/exclusive/unbounded Range type compatible with sqlx and async_graphql"
 edition = "2018"
 license = "Apache-2.0 OR MIT"
+repository = "https://github.com/technocreatives/rangex"
 
 [dependencies]
 async-graphql = { version = "2", optional = true }
