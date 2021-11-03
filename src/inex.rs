@@ -20,10 +20,21 @@ impl<T> From<InExRange<T>> for std::ops::Range<T> {
     }
 }
 
+#[derive(Debug, Clone)]
+struct Error(String, String);
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_fmt(format_args!("Invalid bounds: {}, {}", self.0, self.1))
+    }
+}
+
+impl std::error::Error for Error {}
+
 #[cfg(feature = "sqlx")]
 impl<'r, T> Decode<'r, Postgres> for InExRange<T>
 where
-    T: Type<Postgres> + for<'a> Decode<'a, Postgres>,
+    T: Type<Postgres> + for<'a> Decode<'a, Postgres> + std::fmt::Debug,
 {
     #[inline(always)]
     fn decode(value: PgValueRef) -> Result<Self, sqlx::error::BoxDynError> {
@@ -31,7 +42,7 @@ where
 
         let (inclusive_start, exclusive_end) = match (pgrange.start, pgrange.end) {
             (Bound::Included(a), Bound::Excluded(b)) => (a, b),
-            (a, b) => todo!(),
+            (a, b) => return Err(Box::new(Error(format!("{:?}", a), format!("{:?}", b)))),
         };
 
         Ok(InExRange {
